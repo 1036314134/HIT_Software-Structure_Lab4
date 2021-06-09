@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CourseEntry.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P2.CourseSchedule</a> &gt; <span class="el_source">CourseEntry.java</span></div><h1>CourseEntry.java</h1><pre class="source lang-java linenums">package P2.CourseSchedule;
+
+import P1.Location;
+import P1.PlanningEntry;
+import P1.PlanningEntryCollection;
+import P1.Time;
+import P1.Timeslot;
+import P3.Exception.MyException;
+
+public class CourseEntry extends PlanningEntryCollection&lt;Teacher&gt;{
+	// Abstraction function:
+	// 表示数节课，包含老师、教室、上课时间
+	
+	// Representation invariant:
+	// 一节课只有一个时间段和一个教室
+	
+	// Safety from rep exposure:
+	// 所有域均为private final
+	// 使用防御性拷贝
+	
+	//constructor
+	private CourseEntry() {
+<span class="fc" id="L23">		super();</span>
+<span class="fc" id="L24">		checkRep();</span>
+<span class="fc" id="L25">	}</span>
+
+	public static CourseEntry getCourseEntry() {
+<span class="fc" id="L28">		CourseEntry entry = new CourseEntry();</span>
+<span class="fc" id="L29">		return entry;</span>
+	}
+	
+	//methods
+	/**
+	 * 增加一个老师
+	 * @param name 老师名字
+	 * @param id 身份证号
+	 * @param gender 性别
+	 * @param work 职称
+	 * @throws MyException 
+	 */
+	public void addTeacher(String name, String id, String gender, String work) throws MyException {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">		if (this.getResource(name) != null) {</span>
+<span class="fc" id="L43">			throw new MyException(&quot;老师已加入&quot;);</span>
+		}
+<span class="fc" id="L45">		this.resources.add(Teacher.getNewTeacher(name, id, gender, work));</span>
+<span class="fc" id="L46">		checkRep();</span>
+<span class="fc" id="L47">	}</span>
+	
+	/**
+	 * 增加一节课
+	 * @param planname 课程名称
+	 * @param locationname 教室名字
+	 * @param begintime 开始时间
+	 * @param endtime 结束时间
+	 * @throws MyException 
+	 */
+	public void addPlan(String planname, String locationname, String begintime, String endtime) throws MyException {
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">		if (this.getLocation(locationname) == null) {//位置未加入</span>
+<span class="nc" id="L59">			throw new MyException(&quot;教室未被加入&quot;);</span>
+		}
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">		if(this.getPlan(planname) != null) {//课程已有</span>
+<span class="nc" id="L62">			throw new MyException(&quot;课程已有&quot;);</span>
+		}
+<span class="pc bpc" id="L64" title="2 of 4 branches missed.">		if (Time.isLegalTime(begintime) == false || Time.isLegalTime(endtime) == false) {//时间输入格式不正确</span>
+<span class="nc" id="L65">			throw new MyException(&quot;时间格式错误&quot;);</span>
+		}
+		
+<span class="fc" id="L68">		PlanningEntry&lt;Teacher&gt; plan = PlanningEntry.getNewPlanningEntry(planname);</span>
+<span class="fc" id="L69">		Timeslot timeslot = Timeslot.getNewTimeslot(begintime, endtime);</span>
+<span class="fc" id="L70">		Location location = Location.getNewLocation(locationname);</span>
+<span class="fc" id="L71">		plan.addLocation(location);</span>
+<span class="fc" id="L72">		plan.addTimeslot(timeslot);</span>
+		
+		
+<span class="fc" id="L75">		plans.add(plan);</span>
+<span class="fc" id="L76">		checkRep();</span>
+<span class="fc" id="L77">	}</span>
+	
+	/**
+	 * 改变一节课的教室
+	 * @param planname 课程名
+	 * @param locationname 要更改为的教室名
+	 * @throws MyException 
+	 */
+	public void changeclassroom(String planname, String locationname) throws MyException {
+<span class="pc bpc" id="L86" title="2 of 4 branches missed.">		if(this.getPlan(planname) == null || this.getLocation(locationname) == null) {</span>
+<span class="nc" id="L87">			throw new MyException(&quot;课程或教室不存在&quot;);</span>
+		}
+<span class="fc" id="L89">		String oldname = this.getPlan(planname).getLocations().get(0).getName();</span>
+<span class="fc" id="L90">		PlanningEntry&lt;Teacher&gt; newcourse = this.getPlan(planname);</span>
+<span class="fc" id="L91">		PlanningEntry&lt;Teacher&gt; oldcourse = this.getPlan(planname);</span>
+		
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">		if(newcourse.getState().getName().equals(&quot;RUNNING&quot;)){</span>
+<span class="nc" id="L94">			throw new MyException(&quot;课程正在进行&quot;);</span>
+		}
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if(newcourse.getState().getName().equals(&quot;ENDED&quot;)) {</span>
+<span class="nc" id="L97">			throw new MyException(&quot;课程已结束&quot;);</span>
+		}
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		if(newcourse.getState().getName().equals(&quot;CANCELLED&quot;)) {</span>
+<span class="nc" id="L100">			throw new MyException(&quot;课程已取消&quot;);</span>
+		}
+<span class="fc" id="L102">		newcourse.removeLocation(oldname);</span>
+<span class="fc" id="L103">		newcourse.addLocation(Location.getNewLocation(locationname));</span>
+<span class="fc" id="L104">		this.removePlan(planname);</span>
+<span class="fc" id="L105">		this.plans.add(newcourse);</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if(this.checkLocationConflict(true)) {</span>
+<span class="nc" id="L107">			this.removePlan(planname);</span>
+<span class="nc" id="L108">			this.plans.add(oldcourse);</span>
+<span class="nc" id="L109">			throw new MyException(&quot;位置独占冲突&quot;);</span>
+		}
+<span class="fc" id="L111">	}</span>
+	
+	@Override
+	public void showBoard(String time, String roomName) {
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (Time.isLegalTime(time) == false) {</span>
+<span class="nc" id="L116">			return;</span>
+		}
+<span class="fc" id="L118">		CourseBoard.Board(Time.getNewTime(time), this.getLocation(roomName), this.plans);</span>
+<span class="fc" id="L119">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

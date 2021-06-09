@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FlightScheduleAPP.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P2.FlightSchedule</a> &gt; <span class="el_source">FlightScheduleAPP.java</span></div><h1>FlightScheduleAPP.java</h1><pre class="source lang-java linenums">package P2.FlightSchedule;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
+import P1.PlanningEntry;
+import P3.Exception.MyException;
+
+<span class="nc" id="L12">public class FlightScheduleAPP {</span>
+	public static void main(String args[]) throws IOException, MyException {
+<span class="nc" id="L14">		Scanner in = new Scanner(System.in);</span>
+<span class="nc" id="L15">		System.out.println(&quot;航班管理APP&quot;);</span>
+<span class="nc" id="L16">		FlightScheduleAPP.print();</span>
+<span class="nc" id="L17">		in.close();</span>
+<span class="nc" id="L18">	}</span>
+	
+	
+	public static void print() throws IOException, MyException {
+<span class="nc" id="L22">		FlightEntry lines = null;</span>
+<span class="nc" id="L23">		Scanner in = new Scanner(System.in);</span>
+		
+<span class="nc" id="L25">		 Logger mylogger=Logger.getLogger(FlightScheduleAPP.class.getName());</span>
+<span class="nc" id="L26">	     LogManager logManager = LogManager.getLogManager();</span>
+<span class="nc" id="L27">		 InputStream inputStream = null;</span>
+<span class="nc" id="L28">		 inputStream = FlightScheduleAPP.class.getClassLoader().getResourceAsStream(&quot;P3//Exception//log.properties&quot;);</span>
+		 try { 
+<span class="nc" id="L30">	 		logManager.readConfiguration(inputStream);</span>
+<span class="nc" id="L31">	 	} catch (SecurityException | IOException e1) {</span>
+<span class="nc" id="L32">	 		e1.printStackTrace();</span>
+	 	}  
+<span class="nc" id="L34">	 	logManager.addLogger(mylogger);  </span>
+
+<span class="nc" id="L36">		System.out.println(&quot;请给出你要读取的文件的名字&quot;);</span>
+<span class="nc" id="L37">		System.out.println(&quot;例如：FlightSchedule_1.txt、FlightSchedule_2.txt、FlightSchedule_3.txt、FlightSchedule_4.txt、FlightSchedule_5.txt&quot;);</span>
+
+<span class="nc" id="L39">		while (true) {</span>
+			try {
+<span class="nc" id="L41">				lines = FlightReader.fileReader(in.next());</span>
+<span class="nc" id="L42">				mylogger.info(&quot;读取文件成功&quot;);</span>
+<span class="nc" id="L43">				System.out.println(&quot;读取文件成功&quot;);</span>
+<span class="nc" id="L44">			}catch(IOException e) {</span>
+<span class="nc" id="L45">				mylogger.info(&quot;没有该文件&quot;);</span>
+<span class="nc" id="L46">				System.out.println(&quot;没有该文件&quot;);</span>
+<span class="nc" id="L47">			}catch(MyException e) {</span>
+<span class="nc" id="L48">				mylogger.info(e.getMessage());</span>
+<span class="nc" id="L49">				System.out.println(e.getMessage());</span>
+			}
+<span class="nc bnc" id="L51" title="All 2 branches missed.">			if(lines != null) {</span>
+<span class="nc" id="L52">				break;</span>
+			}
+<span class="nc" id="L54">			System.out.println(&quot;请重新输入文件&quot;);</span>
+		}
+
+<span class="nc" id="L57">		System.out.println(&quot;请选择你要执行的操作&quot;);</span>
+<span class="nc" id="L58">		System.out.println(&quot;1.增加一架飞机&quot;);</span>
+<span class="nc" id="L59">		System.out.println(&quot;2.移除一架飞机&quot;);</span>
+<span class="nc" id="L60">		System.out.println(&quot;3.新增一个机场&quot;);</span>
+<span class="nc" id="L61">		System.out.println(&quot;4.移除一个机场&quot;);</span>
+<span class="nc" id="L62">		System.out.println(&quot;5.增加一次航程&quot;);</span>
+<span class="nc" id="L63">		System.out.println(&quot;6.取消某个航程&quot;);</span>
+<span class="nc" id="L64">		System.out.println(&quot;7.让某个飞机去飞某个航程&quot;);</span>
+<span class="nc" id="L65">		System.out.println(&quot;8.启动某个航程&quot;);</span>
+<span class="nc" id="L66">		System.out.println(&quot;9.结束某个航程&quot;);</span>
+<span class="nc" id="L67">		System.out.println(&quot;10.查看某个航程的状态&quot;);</span>
+<span class="nc" id="L68">		System.out.println(&quot;11.查看冲突&quot;);</span>
+<span class="nc" id="L69">		System.out.println(&quot;12.查看某个飞机的航程&quot;);</span>
+<span class="nc" id="L70">		System.out.println(&quot;13.显示计划版&quot;);</span>
+<span class="nc" id="L71">		System.out.println(&quot;14.离开&quot;);</span>
+
+<span class="nc" id="L73">		boolean flag = true;</span>
+
+<span class="nc bnc" id="L75" title="All 2 branches missed.">		while (flag) {</span>
+<span class="nc bnc" id="L76" title="All 15 branches missed.">			switch (in.nextInt()) {</span>
+				case 1:
+<span class="nc" id="L78">					System.out.println(&quot;请给出你要添加的飞机的信息&quot;);</span>
+<span class="nc" id="L79">					System.out.println(&quot;飞机名称 飞机种类 飞机座位数 飞机机龄&quot;);</span>
+					try {
+<span class="nc" id="L81">						String planename = in.next();</span>
+<span class="nc" id="L82">						lines.addPlane(planename, in.next(), in.nextInt(), in.nextDouble());</span>
+<span class="nc" id="L83">						mylogger.info(&quot;添加飞机&quot; + planename + &quot;成功&quot;);</span>
+<span class="nc" id="L84">						System.out.println(&quot;添加成功&quot;);</span>
+<span class="nc" id="L85">					}catch(MyException e) {</span>
+<span class="nc" id="L86">						mylogger.info(e.getMessage());</span>
+<span class="nc" id="L87">						System.out.println(e.getMessage());</span>
+					}
+<span class="nc" id="L89">					break;</span>
+				case 2:
+<span class="nc" id="L91">					System.out.println(&quot;请给出要删除的飞机的名字&quot;);</span>
+<span class="nc" id="L92">					String name = in.next();</span>
+					try {
+<span class="nc" id="L94">						lines.removeResource(name);</span>
+<span class="nc" id="L95">						mylogger.info(&quot;删除飞机&quot; + name + &quot;成功&quot;);</span>
+<span class="nc" id="L96">						System.out.println(&quot;删除成功&quot;);</span>
+<span class="nc" id="L97">					}catch(MyException e) {</span>
+<span class="nc" id="L98">						mylogger.info(e.getMessage());</span>
+<span class="nc" id="L99">						System.out.println(e.getMessage());</span>
+					}
+<span class="nc" id="L101">					break;</span>
+				case 3:
+<span class="nc" id="L103">					System.out.println(&quot;请给出要增加的机场的名字&quot;);</span>
+					try {
+<span class="nc" id="L105">						String locationname = in.next();</span>
+<span class="nc" id="L106">						lines.addLocation(locationname);</span>
+<span class="nc" id="L107">						mylogger.info(&quot;增加机场&quot; + locationname + &quot;成功&quot;);</span>
+<span class="nc" id="L108">						System.out.println(&quot;增加成功&quot;);</span>
+<span class="nc" id="L109">					}catch(MyException e) {</span>
+<span class="nc" id="L110">						mylogger.info(e.getMessage());</span>
+<span class="nc" id="L111">						System.out.println(e.getMessage());</span>
+					}
+<span class="nc" id="L113">					break;</span>
+				case 4:
+<span class="nc" id="L115">					System.out.println(&quot;请给出要移除的机场的名字&quot;);</span>
+<span class="nc" id="L116">					String locationname = in.next();</span>
+					try {
+<span class="nc" id="L118">						lines.removeLocation(locationname);</span>
+<span class="nc" id="L119">						mylogger.info(&quot;删除机场&quot; + locationname + &quot;成功&quot;);</span>
+<span class="nc" id="L120">						System.out.println(&quot;删除成功&quot;);</span>
+<span class="nc" id="L121">					}catch(MyException e) {</span>
+<span class="nc" id="L122">						mylogger.info(e.getMessage());</span>
+<span class="nc" id="L123">						System.out.println(e.getMessage());</span>
+					}
+<span class="nc" id="L125">					break;</span>
+				case 5:
+<span class="nc" id="L127">					System.out.println(&quot;请给出要增加的航程的信息&quot;);</span>
+<span class="nc" id="L128">					System.out.println(&quot;(航程名称 始发机场 到达机场 出发时间 到达时间)&quot;);</span>
+					try {
+<span class="nc" id="L130">						String planname = in.next();</span>
+<span class="nc" id="L131">						lines.addPlan(planname, in.next(), in.next(), in.next() + &quot; &quot; + in.next(),in.next() + &quot; &quot; + in.next());</span>
+<span class="nc" id="L132">						mylogger.info(&quot;增加航程&quot; + planname + &quot;成功&quot;);</span>
+<span class="nc" id="L133">						System.out.println(&quot;增加成功&quot;);</span>
+<span class="nc" id="L134">					}catch(MyException e) {</span>
+<span class="nc" id="L135">						mylogger.info(e.getMessage());</span>
+<span class="nc" id="L136">						System.out.println(e.getMessage());</span>
+					}
+<span class="nc" id="L138">					break;</span>
+				case 6:
+<span class="nc" id="L140">					System.out.println(&quot;请给出要取消的航程名称&quot;);</span>
+					try {
+<span class="nc" id="L142">						String planname = in.next();</span>
+<span class="nc" id="L143">						lines.cancel(planname);</span>
+<span class="nc" id="L144">						mylogger.info(&quot;取消航程&quot; + planname + &quot;成功&quot;);</span>
+<span class="nc" id="L145">						System.out.println(&quot;取消成功&quot;);</span>
+<span class="nc" id="L146">					}catch(MyException e) {</span>
+<span class="nc" id="L147">						mylogger.info(e.getMessage());</span>
+<span class="nc" id="L148">						System.out.println(e.getMessage());</span>
+					}
+<span class="nc" id="L150">					break;</span>
+				case 7:
+<span class="nc" id="L152">					System.out.println(&quot;请给出飞机名称和航程名称&quot;);</span>
+					try {
+<span class="nc" id="L154">						String planename = in.next();</span>
+<span class="nc" id="L155">						String planname = in.next();</span>
+<span class="nc" id="L156">						lines.allocateResource(planename, planname);</span>
+<span class="nc" id="L157">						mylogger.info(&quot;飞机&quot; + planename + &quot;分配给了航程&quot; + planname);</span>
+<span class="nc" id="L158">						System.out.println(&quot;分配成功&quot;);</span>
+<span class="nc" id="L159">					}catch(MyException e) {</span>
+<span class="nc" id="L160">						mylogger.info(e.getMessage());</span>
+<span class="nc" id="L161">						System.out.println(e.getMessage());</span>
+					}
+<span class="nc" id="L163">					break;</span>
+				case 8:
+<span class="nc" id="L165">					System.out.println(&quot;请输入航班名&quot;);</span>
+					try {
+<span class="nc" id="L167">						String planname = in.next();</span>
+<span class="nc" id="L168">						lines.start(planname);</span>
+<span class="nc" id="L169">						System.out.println(&quot;航班&quot; + planname + &quot;启动成功&quot;);</span>
+<span class="nc" id="L170">					}catch(MyException e){</span>
+<span class="nc" id="L171">						mylogger.info(e.getMessage());</span>
+<span class="nc" id="L172">						System.out.println(e.getMessage());</span>
+					}
+<span class="nc" id="L174">					break;</span>
+				case 9:
+<span class="nc" id="L176">					System.out.println(&quot;请输入航班名&quot;);</span>
+					try {
+<span class="nc" id="L178">						String planname = in.next();</span>
+<span class="nc" id="L179">						lines.complete(planname);</span>
+<span class="nc" id="L180">						System.out.println(&quot;航班&quot; + planname + &quot;结束成功&quot;);</span>
+<span class="nc" id="L181">					}catch(MyException e) {</span>
+<span class="nc" id="L182">						mylogger.info(e.getMessage());</span>
+<span class="nc" id="L183">						System.out.println(e.getMessage());</span>
+					}
+<span class="nc" id="L185">					break;</span>
+				case 10:
+<span class="nc" id="L187">					System.out.println(&quot;请给出要查询的航程名称&quot;);</span>
+<span class="nc" id="L188">					PlanningEntry&lt;Plane&gt; plan = lines.getPlan(in.next());</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">					if (plan == null) {</span>
+<span class="nc" id="L190">						System.out.println(&quot;未查询到该航程&quot;);</span>
+<span class="nc" id="L191">					}else {</span>
+<span class="nc" id="L192">						System.out.println(&quot;该航程状态为:&quot; + plan.getState().getName());</span>
+					}
+<span class="nc" id="L194">					break;</span>
+				case 11:
+<span class="nc" id="L196">					boolean f = false;</span>
+<span class="nc" id="L197">					System.out.println(&quot;请选择检查飞机冲突的策略,1或者2&quot;);</span>
+<span class="nc" id="L198">					int k = in.nextInt();</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">					if(k == 1) {</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">						if(lines.checkLocationConflict(true)) {</span>
+<span class="nc" id="L201">							System.out.println(&quot;飞机有冲突&quot;);</span>
+<span class="nc" id="L202">							f = true;</span>
+						}
+<span class="nc bnc" id="L204" title="All 2 branches missed.">					}else if(k == 2) {</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">						if(lines.checkLocationConflict(false)) {</span>
+<span class="nc" id="L206">							System.out.println(&quot;飞机有冲突&quot;);</span>
+<span class="nc" id="L207">							f = true;</span>
+						}
+<span class="nc" id="L209">					}else {</span>
+<span class="nc" id="L210">						System.out.println(&quot;输入错误&quot;);</span>
+<span class="nc" id="L211">						break;</span>
+					}
+<span class="nc bnc" id="L213" title="All 2 branches missed.">					if(lines.checkResourceConflict()) {</span>
+<span class="nc" id="L214">						System.out.println(&quot;机场有冲突&quot;);</span>
+<span class="nc" id="L215">						f = true;</span>
+					}
+<span class="nc bnc" id="L217" title="All 2 branches missed.">					if(!f) {</span>
+<span class="nc" id="L218">						System.out.println(&quot;没有冲突&quot;);</span>
+					}
+<span class="nc" id="L220">					break;</span>
+				case 12:
+<span class="nc" id="L222">					System.out.println(&quot;请输入飞机名字&quot;);</span>
+<span class="nc" id="L223">					String planename = in.next();</span>
+<span class="nc" id="L224">					System.out.println(lines.getResourceEntries(planename).toString());</span>
+					
+<span class="nc" id="L226">					System.out.println(&quot;请选择其中一个航班&quot;);</span>
+<span class="nc" id="L227">					String linename2 = in.next();</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">					if(lines.getPreEntry(planename, linename2) == null) {</span>
+<span class="nc" id="L229">						System.out.println(&quot;没有前序航班&quot;);</span>
+<span class="nc" id="L230">					}else {</span>
+<span class="nc" id="L231">						System.out.println(&quot;前序航班为：&quot; + lines.getPreEntry(planename, linename2).toString());</span>
+					}
+<span class="nc" id="L233">					break;</span>
+				case 13:
+<span class="nc" id="L235">					System.out.println(&quot;请给出当前时间和机场&quot;);</span>
+<span class="nc" id="L236">					lines.showBoard(in.next() + &quot; &quot; + in.next(), in.next());</span>
+<span class="nc" id="L237">					break;</span>
+				case 14:
+<span class="nc" id="L239">					flag = false;</span>
+<span class="nc" id="L240">					break;</span>
+				default:
+<span class="nc" id="L242">					System.out.println(&quot;输入错误，重新输入&quot;);</span>
+			}
+		}
+
+<span class="nc" id="L246">		in.close();</span>
+<span class="nc" id="L247">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

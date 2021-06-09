@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TrainBoard.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P2.TrainSchedule</a> &gt; <span class="el_source">TrainBoard.java</span></div><h1>TrainBoard.java</h1><pre class="source lang-java linenums">package P2.TrainSchedule;
+
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+import P1.Location;
+import P1.PlanningEntry;
+import P1.Resource;
+import P1.Time;
+
+<span class="nc" id="L16">public class TrainBoard {</span>
+	private static JFrame container;
+	private static JTable jTable;
+
+
+	public static &lt;R extends Resource&gt; void Board(Time time, Location location, List&lt;PlanningEntry&lt;R&gt;&gt; plans) {
+<span class="fc" id="L22">		List&lt;PlanningEntry&lt;R&gt;&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L23">		Time earlytime = Time.getNewTime(time.toString());</span>
+<span class="fc" id="L24">		Time latetime = Time.getNewTime(time.toString());</span>
+<span class="fc" id="L25">		Time time1 = Time.getNewTime(&quot;0000-00-00 -1:00&quot;);</span>
+<span class="fc" id="L26">		Time time2 = Time.getNewTime(&quot;0000-00-00 1:00&quot;);</span>
+<span class="fc" id="L27">		earlytime.addTime(time1);</span>
+<span class="fc" id="L28">		latetime.addTime(time2);</span>
+		//System.out.println(earlytime.toString()+ &quot; &quot;+ latetime.toString());
+		
+<span class="fc bfc" id="L31" title="All 2 branches covered.">		for (PlanningEntry&lt;R&gt; line: plans) {//抵达班次</span>
+<span class="fc" id="L32">			int max = line.getLocations().size();</span>
+<span class="fc" id="L33">			int index = -1;</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">			for(int i = 1; i &lt; max; i++) {</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">				if(line.getLocations().get(i).getName().equals(location.getName())) {</span>
+<span class="nc" id="L36">					index = i;</span>
+<span class="nc" id="L37">					break;</span>
+				}
+			}
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">			if(index == -1) {//不抵达</span>
+<span class="fc" id="L41">				continue;</span>
+			}
+<span class="nc bnc" id="L43" title="All 2 branches missed.">			if(line.getTimeslots().get(index-1).getEnd().compareto(earlytime) &lt; 0 </span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">					|| line.getTimeslots().get(index-1).getEnd().compareto(latetime) &gt; 0) {//时间在范围外</span>
+<span class="nc" id="L45">				continue;</span>
+			}
+<span class="nc bnc" id="L47" title="All 2 branches missed.">			if(line.getResources().isEmpty()) {//路线未分配列车</span>
+<span class="nc" id="L48">				continue;</span>
+			}
+<span class="nc" id="L50">			list.add(line);</span>
+		}
+
+<span class="fc" id="L53">		CreateJTable(time, location, list, true);</span>
+		
+<span class="fc" id="L55">		list.clear();</span>
+
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		for (PlanningEntry&lt;R&gt; line: plans) {//出发航班</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">			if(line.getLocations().get(0).equals(location) == false) {</span>
+<span class="nc" id="L59">				continue;</span>
+			}
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">			if(line.getTimeslots().get(0).getBegin().compareto(earlytime) &lt; 0 </span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">					|| line.getTimeslots().get(0).getBegin().compareto(latetime) &gt; 0) {</span>
+<span class="nc" id="L63">				continue;</span>
+			}
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">			if(line.getResources().isEmpty()) {//路线未分配列车</span>
+<span class="nc" id="L66">				continue;</span>
+			}
+<span class="fc" id="L68">			list.add(line);</span>
+		}
+
+<span class="fc" id="L71">		CreateJTable(time, location, list, false);</span>
+<span class="fc" id="L72">	}</span>
+
+	
+
+	private static &lt;R extends Resource&gt; void CreateJTable(Time time, Location location, List&lt;PlanningEntry&lt;R&gt;&gt; lines, boolean arrived) {
+<span class="fc" id="L77">		String[] columnName = { &quot;时间&quot;, &quot;车厢&quot;, &quot;路线&quot;, &quot;状态&quot; };</span>
+
+<span class="fc" id="L79">		Object[][] data = new Object[lines.size()][4];</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">		for (int i = 0; i &lt; lines.size(); i++) {</span>
+<span class="fc" id="L81">			int index = -1;</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">			for(int j = 0; j &lt; lines.get(i).getLocations().size(); j++) {</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">				if(lines.get(i).getLocations().get(j).getName().equals(location.getName())) {</span>
+<span class="fc" id="L84">					index = j;</span>
+<span class="fc" id="L85">					break;</span>
+				}
+			}
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">			if(arrived) {</span>
+<span class="nc" id="L89">				data[i][0] = String.format(&quot;%02d&quot;, lines.get(i).getTimeslots().get(index-1).getBegin().getHour()) + &quot;:&quot;</span>
+<span class="nc" id="L90">						+ String.format(&quot;%02d&quot;, lines.get(i).getTimeslots().get(index-1).getBegin().getMinute());</span>
+<span class="nc" id="L91">			}else {</span>
+<span class="fc" id="L92">				data[i][0] = String.format(&quot;%02d&quot;, lines.get(i).getTimeslots().get(0).getEnd().getHour()) + &quot;:&quot;</span>
+<span class="fc" id="L93">					+ String.format(&quot;%02d&quot;, lines.get(i).getTimeslots().get(0).getEnd().getMinute());</span>
+			}
+			
+			
+<span class="fc" id="L97">			data[i][1] = &quot;&quot;;</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">			for(int j = 0; j &lt; lines.get(i).getResources().size(); j++) {</span>
+<span class="fc" id="L99">				data[i][1] = data[i][1] + &quot; &quot; + lines.get(i).getResources().get(j).getName();</span>
+			}
+			
+<span class="fc" id="L102">			String linename = lines.get(i).getLocations().get(0).getName() + &quot;-&quot;;</span>
+<span class="fc" id="L103">			int length = lines.get(i).getLocations().size();</span>
+<span class="fc" id="L104">			linename = linename + lines.get(i).getLocations().get(length-1).getName();</span>
+<span class="fc" id="L105">			data[i][2] = linename;</span>
+			
+			
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">			if(lines.get(i).getState().getName().equals(&quot;CANCELLED&quot;)) {</span>
+<span class="nc" id="L109">				data[i][3] = &quot;已取消&quot;;</span>
+<span class="nc" id="L110">				continue;</span>
+			}
+			
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">			if(time.compareto(lines.get(i).getTimeslots().get(0).getBegin()) &gt; 0) {</span>
+<span class="fc" id="L114">				lines.get(i).start();</span>
+			}
+			
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">			if(index != 0) {</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">				if(time.compareto(lines.get(i).getTimeslots().get(index-1).getEnd()) &gt; 0) {</span>
+<span class="nc" id="L119">					lines.get(i).complete();</span>
+				}
+<span class="nc bnc" id="L121" title="All 2 branches missed.">				for(int j = 0; j &lt; lines.get(i).getTimeslots().size()-1; j++) {</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">					if(time.compareto(lines.get(i).getTimeslots().get(j).getEnd()) &gt; 0</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">							&amp;&amp; time.compareto(lines.get(i).getTimeslots().get(j+1).getBegin()) &lt; 0){</span>
+<span class="nc" id="L124">						lines.get(i).block();</span>
+					}
+				}
+			}
+			
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">			if(lines.get(i).getState().getName().equals(&quot;ALLOCATED&quot;)) {</span>
+<span class="nc" id="L130">				data[i][3] = &quot;即将出发&quot;;</span>
+<span class="nc" id="L131">				continue;</span>
+			}
+			
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			if(lines.get(i).getState().getName().equals(&quot;RUNNING&quot;)) {</span>
+<span class="fc" id="L135">				data[i][3] = &quot;已出发&quot;;</span>
+<span class="fc" id="L136">				continue;</span>
+			}
+<span class="nc bnc" id="L138" title="All 2 branches missed.">			if(lines.get(i).getState().getName().equals(&quot;BLOCKED&quot;)) {</span>
+<span class="nc" id="L139">				data[i][3] = &quot;经停某中间站&quot;;</span>
+<span class="nc" id="L140">				continue;</span>
+			}
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			if(lines.get(i).getState().getName().equals(&quot;ENDED&quot;)) {</span>
+<span class="nc" id="L143">				data[i][3] = &quot;已到达&quot;;</span>
+				continue;
+			}
+			
+		}
+
+<span class="fc" id="L149">		jTable = new JTable(data, columnName);</span>
+<span class="fc" id="L150">		JScrollPane jScrollPane = new JScrollPane();</span>
+<span class="fc" id="L151">		jScrollPane.setViewportView(jTable);</span>
+
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		if (arrived) {</span>
+<span class="fc" id="L154">			container = new JFrame(time.toString() + &quot; &quot; + location.getName() + &quot; 抵达班次&quot;);</span>
+<span class="fc" id="L155">		}else {</span>
+<span class="fc" id="L156">			container = new JFrame(time.toString() + &quot; &quot; + location.getName() + &quot; 出发班次&quot;);</span>
+		}
+		
+<span class="fc" id="L159">		container.setSize(800, 600);</span>
+<span class="fc" id="L160">		container.setLayout(new BorderLayout());</span>
+<span class="fc" id="L161">		container.add(jScrollPane, BorderLayout.CENTER);</span>
+<span class="fc" id="L162">		container.setVisible(true);</span>
+<span class="fc" id="L163">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

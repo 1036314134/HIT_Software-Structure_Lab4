@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FlightEntryTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">test</a> &gt; <a href="index.source.html" class="el_package">P2</a> &gt; <span class="el_source">FlightEntryTest.java</span></div><h1>FlightEntryTest.java</h1><pre class="source lang-java linenums">package P2;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import P1.PlanningEntry;
+import P2.FlightSchedule.FlightEntry;
+import P2.FlightSchedule.Plane;
+import P3.Exception.MyException;
+
+<span class="pc bpc" id="L12" title="1 of 2 branches missed.">public class FlightEntryTest {</span>
+	//测试策略
+	//对addTrain()，测试resources为空时能否加入，不为空时能否加入，能否避免重复加入
+	//对removeResource()，测试能否正常删除
+	//对getResource()，测试能否正常获取资源
+	//对addLocation()，测试location为空时能否正常加入，不为空时能否加入，能否避免重复加入
+	//对getLocation()，测试能否正常获取位置
+	//对removeLocation()，测试能否正常删除位置
+	//对addPlan()，测试机场未加入能否加入航班，机场已加入能否加入航班，能否避免重复加入
+	//对State类，测试各种状态改变是否符合预期
+	@Test(expected = AssertionError.class)
+	public void testAssertionsEnabled() {
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">		assert false;</span>
+<span class="nc" id="L25">	}</span>
+	
+	
+	@Test
+	public void testResource() {
+<span class="fc" id="L30">		FlightEntry plans = FlightEntry.getFlightEntry();</span>
+<span class="fc" id="L31">		assertEquals(plans.getResource(&quot;A&quot;), null);</span>
+		try {
+<span class="fc" id="L33">			plans.addPlane(&quot;A&quot;, &quot;A380&quot;, 100, 10);</span>
+<span class="pc" id="L34">		}catch(MyException e){</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">			assert false;</span>
+		}
+		try {
+<span class="fc" id="L38">			plans.addPlane(&quot;B&quot;, &quot;B380&quot;, 200, 20);</span>
+<span class="pc" id="L39">		}catch(MyException e){</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">			assert false;</span>
+		}
+		try {
+<span class="nc" id="L43">			plans.addPlane(&quot;B&quot;, &quot;B380&quot;, 200, 20);</span>
+<span class="pc" id="L44">		}catch(MyException e){</span>
+			assert true;
+		}
+		
+<span class="fc" id="L48">		assertEquals(plans.getResource(&quot;A&quot;).getName(), &quot;A&quot;);</span>
+		
+		try {
+<span class="fc" id="L51">			plans.removeResource(&quot;A&quot;);</span>
+<span class="pc" id="L52">		}catch(MyException e){</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">			assert false;</span>
+		}
+		try {
+<span class="nc" id="L56">			plans.removeResource(&quot;A&quot;);</span>
+<span class="pc" id="L57">		}catch(MyException e){</span>
+			assert true;
+		}
+<span class="fc" id="L60">	}</span>
+	
+	
+	@Test
+	public void testLocation() {
+<span class="fc" id="L65">		FlightEntry plans = FlightEntry.getFlightEntry();</span>
+<span class="fc" id="L66">		String locationname1 = &quot;nantong&quot;;</span>
+<span class="fc" id="L67">		String locationname2 = &quot;wuhu&quot;;</span>
+<span class="fc" id="L68">		assertEquals(plans.getLocation(locationname1), null);</span>
+		
+		try {
+<span class="fc" id="L71">			plans.addLocation(locationname1);</span>
+<span class="pc" id="L72">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">			assert false;</span>
+		}
+		try {
+<span class="nc" id="L76">			plans.addLocation(locationname1);</span>
+<span class="pc" id="L77">		}catch(MyException e) {</span>
+			assert true;
+		}
+		try {
+<span class="fc" id="L81">			plans.addLocation(locationname2);</span>
+<span class="pc" id="L82">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">			assert false;</span>
+		}
+		
+<span class="fc" id="L86">		assertEquals(plans.getLocation(locationname1).getName(), locationname1);</span>
+<span class="fc" id="L87">		assertEquals(plans.getLocation(locationname2).getName(), locationname2);</span>
+		
+		try {
+<span class="fc" id="L90">			plans.removeLocation(locationname1);</span>
+<span class="pc" id="L91">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">			assert false;</span>
+		}
+		
+<span class="fc" id="L95">		assertEquals(plans.getLocation(locationname1), null);</span>
+		
+		try {
+<span class="nc" id="L98">			plans.removeLocation(locationname1);</span>
+<span class="pc" id="L99">		}catch(MyException e) {</span>
+			assert true;
+		}
+		
+		
+<span class="fc" id="L104">	}</span>
+	
+	
+	@Test
+	public void testPlan() {
+<span class="fc" id="L109">		FlightEntry plans = FlightEntry.getFlightEntry();</span>
+<span class="fc" id="L110">		String locationname1 = &quot;nantong&quot;;</span>
+<span class="fc" id="L111">		String locationname2 = &quot;wuhu&quot;;</span>
+<span class="fc" id="L112">		String begintime1 = &quot;2020-01-01 17:00&quot;;</span>
+<span class="fc" id="L113">		String endtime1 = &quot;2020-01-01 19:00&quot;;</span>
+		
+		try {
+<span class="nc" id="L116">			plans.addPlan(&quot;航班1&quot;, locationname1, locationname2, begintime1, endtime1);</span>
+<span class="pc" id="L117">		}catch(MyException e) {</span>
+			assert true;
+		}
+		
+		try {
+<span class="fc" id="L122">			plans.addLocation(locationname1);</span>
+<span class="pc" id="L123">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">			assert false;</span>
+		}
+		try {
+<span class="fc" id="L127">			plans.addLocation(locationname2);</span>
+<span class="pc" id="L128">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">			assert false;</span>
+		}
+		try {
+<span class="fc" id="L132">			plans.addPlane(&quot;A&quot;, &quot;A380&quot;, 100, 10);</span>
+<span class="pc" id="L133">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">			assert false;</span>
+		}
+		
+		try {
+<span class="fc" id="L138">			plans.addPlan(&quot;航班1&quot;, locationname1, locationname2, begintime1, endtime1);</span>
+<span class="pc" id="L139">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">			assert false;</span>
+		}
+		try {
+<span class="nc" id="L143">			plans.addPlan(&quot;航班1&quot;, locationname1, locationname2, begintime1, endtime1);</span>
+<span class="pc" id="L144">		}catch(MyException e) {</span>
+			assert true;
+		}
+		
+<span class="fc" id="L148">		PlanningEntry&lt;Plane&gt; line1 = plans.getPlan(&quot;航班1&quot;);</span>
+		
+<span class="fc" id="L150">		assertEquals(line1.getState().getName(), &quot;WAITING&quot;);</span>
+<span class="fc" id="L151">		assertEquals(line1.getLocations().get(0).getName(), locationname1);</span>
+<span class="fc" id="L152">		assertEquals(line1.getLocations().get(1).getName(), locationname2);</span>
+<span class="fc" id="L153">		assertEquals(line1.getTimeslots().get(0).getBegin().toString(), &quot;2020-01-01 17:00&quot;);</span>
+<span class="fc" id="L154">		assertEquals(line1.getTimeslots().get(0).getEnd().toString(), &quot;2020-01-01 19:00&quot;);</span>
+		
+<span class="fc" id="L156">		assertEquals(plans.removePlan(&quot;航班1&quot;), true);</span>
+<span class="fc" id="L157">		assertEquals(plans.getPlan(&quot;航班1&quot;), null);</span>
+<span class="fc" id="L158">	}</span>
+	
+	
+	@Test
+	public void testState() {
+<span class="fc" id="L163">		FlightEntry plans = FlightEntry.getFlightEntry();</span>
+<span class="fc" id="L164">		String locationname1 = &quot;nantong&quot;;</span>
+<span class="fc" id="L165">		String locationname2 = &quot;wuhu&quot;;</span>
+<span class="fc" id="L166">		String begintime1 = &quot;2020-01-01 17:00&quot;;</span>
+<span class="fc" id="L167">		String endtime1 = &quot;2020-01-01 19:00&quot;;</span>
+		
+		try {
+<span class="fc" id="L170">			plans.addLocation(locationname1);</span>
+<span class="pc" id="L171">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			assert false;</span>
+		}
+		try {
+<span class="fc" id="L175">			plans.addLocation(locationname2);</span>
+<span class="pc" id="L176">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">			assert false;</span>
+		}
+		try {
+<span class="fc" id="L180">			plans.addPlane(&quot;A&quot;, &quot;A380&quot;, 100, 10);</span>
+<span class="pc" id="L181">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">			assert false;</span>
+		}
+		
+		try {
+<span class="fc" id="L186">			plans.addPlan(&quot;航班1&quot;, locationname1, locationname2, begintime1, endtime1);</span>
+<span class="pc" id="L187">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">			assert false;</span>
+		}
+		try {
+<span class="fc" id="L191">			plans.addPlan(&quot;航班2&quot;, locationname1, locationname2, begintime1, endtime1);</span>
+<span class="pc" id="L192">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">			assert false;</span>
+		}
+		
+		try {
+<span class="fc" id="L197">			plans.start(&quot;航班1&quot;);</span>
+<span class="pc" id="L198">		}catch(MyException e) {</span>
+			assert true;
+		}
+		try {
+<span class="nc" id="L202">			plans.complete(&quot;航班1&quot;);</span>
+<span class="pc" id="L203">		}catch(MyException e) {</span>
+			assert true;
+		}
+		try {
+<span class="fc" id="L207">			plans.allocateResource(&quot;A&quot;, &quot;航班1&quot;);</span>
+<span class="pc" id="L208">		}catch(MyException e) {</span>
+			assert true;
+		}
+<span class="fc" id="L211">		assertEquals(plans.getState(&quot;航班1&quot;).getName(), &quot;ALLOCATED&quot;);</span>
+		try {
+<span class="nc" id="L213">			plans.start(&quot;航班1&quot;);</span>
+<span class="pc" id="L214">		}catch(MyException e) {</span>
+			assert true;
+		}
+<span class="fc" id="L217">		assertEquals(plans.getState(&quot;航班1&quot;).getName(), &quot;RUNNING&quot;);</span>
+		try {
+<span class="nc" id="L219">			plans.cancel(&quot;航班1&quot;);</span>
+<span class="pc" id="L220">		}catch(MyException e) {</span>
+			assert true;
+		}
+		try {
+<span class="fc" id="L224">			plans.complete(&quot;航班1&quot;);</span>
+<span class="pc" id="L225">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">			assert false;</span>
+		}
+<span class="fc" id="L228">		assertEquals(plans.getState(&quot;航班1&quot;).getName(), &quot;ENDED&quot;);</span>
+		try {
+<span class="nc" id="L230">			plans.allocateResource(&quot;A&quot;, &quot;航班2&quot;);</span>
+<span class="pc" id="L231">		}catch(MyException e) {</span>
+			assert true;
+		}
+<span class="fc" id="L234">		assertEquals(plans.getState(&quot;航班2&quot;).getName(), &quot;ALLOCATED&quot;);</span>
+		try {
+<span class="fc" id="L236">			plans.cancel(&quot;航班2&quot;);</span>
+<span class="pc" id="L237">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">			assert false;</span>
+		}
+<span class="fc" id="L240">		assertEquals(plans.getState(&quot;航班2&quot;).getName(), &quot;CANCELLED&quot;);</span>
+		
+<span class="fc" id="L242">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TrainEntry.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P2.TrainSchedule</a> &gt; <span class="el_source">TrainEntry.java</span></div><h1>TrainEntry.java</h1><pre class="source lang-java linenums">package P2.TrainSchedule;
+
+import java.util.List;
+
+import P1.Location;
+import P1.PlanningEntry;
+import P1.PlanningEntryCollection;
+import P1.Time;
+import P1.Timeslot;
+import P3.Exception.MyException;
+
+public class TrainEntry extends PlanningEntryCollection&lt;Train&gt; {
+	// Abstraction function:
+	// 表示数趟火车路线，包含车厢、站点、时间段
+	
+	// Representation invariant:
+	// 一个路线可以有多个车厢、多个站点，但时间段数量比站点数量少一个
+	
+	// Safety from rep exposure:
+	// 所有域均为private final
+	// 使用防御性拷贝
+	
+	//constructor
+	private TrainEntry() {
+<span class="fc" id="L25">		super();</span>
+<span class="fc" id="L26">		checkRep();</span>
+<span class="fc" id="L27">	}</span>
+
+	public static TrainEntry getTrainEntry() {
+<span class="fc" id="L30">		return new TrainEntry();</span>
+	}
+	
+	//methods
+	/**
+	 * 增加一辆货车
+	 * @param name 火车名字
+	 * @param type 种类
+	 * @param seats 座位数
+	 * @param year 生产年份
+	 * @throws MyException 
+	 */
+	public void addTrain(String name, String type, int seats, int year) throws MyException {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		if (this.getResource(name) != null) {//火车存在</span>
+<span class="fc" id="L44">			throw new MyException(&quot;火车已存在&quot;);</span>
+		}
+		
+<span class="fc" id="L47">		this.resources.add(Train.getNewTrain(name, type, seats, year));</span>
+<span class="fc" id="L48">		checkRep();</span>
+<span class="fc" id="L49">	}</span>
+	
+	/**
+	 * 添加一个计划
+	 * @param planname 计划名称
+	 * @param locations 所有站点名称的集合
+	 * @param times 所有时间的集合
+	 * @throws MyException 
+	 */
+	public void addPlan(String planname, List&lt;String&gt; locations, List&lt;String&gt; times) throws MyException {
+<span class="fc bfc" id="L59" title="All 2 branches covered.">		for(String l: locations) {//站点未加入</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">			if (this.getLocation(l) == null) {</span>
+<span class="fc" id="L61">				throw new MyException(&quot;站点未被加入&quot;);</span>
+			}
+		}
+<span class="fc bfc" id="L64" title="All 2 branches covered.">		if (this.getPlan(planname) != null) {//路线已有</span>
+<span class="fc" id="L65">			throw new MyException(&quot;路线已有&quot;);</span>
+		}
+<span class="fc bfc" id="L67" title="All 2 branches covered.">		for(String t: times) {//时间输入格式不正确</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">			if (Time.isLegalTime(t) == false) {</span>
+<span class="nc" id="L69">				throw new MyException(&quot;时间格式错误&quot;);</span>
+			}
+		}
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">		if((locations.size()- 1) * 2  != times.size()) {//时间与站点数目不一致</span>
+<span class="nc" id="L73">			throw new MyException(&quot;输入的信息中时间与站点数目不一致&quot;);</span>
+		}
+		
+<span class="fc" id="L76">		PlanningEntry&lt;Train&gt; line = PlanningEntry.getNewPlanningEntry(planname);</span>
+<span class="fc" id="L77">		int max = locations.size();</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">		for(int i = 0; i &lt; max; i++) {</span>
+<span class="fc" id="L79">			line.addLocation(Location.getNewLocation(locations.get(i)));</span>
+		}
+<span class="fc bfc" id="L81" title="All 2 branches covered.">		for(int i = 0; i &lt; 2*(max-1); i += 2) {</span>
+<span class="fc" id="L82">			Timeslot timeslot = Timeslot.getNewTimeslot(times.get(i), times.get(i+1));</span>
+<span class="fc" id="L83">			line.addTimeslot(timeslot);</span>
+		}
+<span class="fc" id="L85">		this.plans.add(line);</span>
+<span class="fc" id="L86">		checkRep();</span>
+<span class="fc" id="L87">	}</span>
+	
+	@Override
+	public void showBoard(String time, String locationName) {
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (Time.isLegalTime(time) == false) {</span>
+<span class="nc" id="L92">			return;</span>
+		}
+<span class="fc" id="L94">		TrainBoard.Board(Time.getNewTime(time), this.getLocation(locationName), this.plans);</span>
+<span class="fc" id="L95">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

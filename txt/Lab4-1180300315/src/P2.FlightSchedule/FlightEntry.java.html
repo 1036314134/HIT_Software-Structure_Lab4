@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FlightEntry.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P2.FlightSchedule</a> &gt; <span class="el_source">FlightEntry.java</span></div><h1>FlightEntry.java</h1><pre class="source lang-java linenums">package P2.FlightSchedule;
+
+import P1.Location;
+import P1.PlanningEntry;
+import P1.PlanningEntryCollection;
+import P1.Time;
+import P1.Timeslot;
+import P3.Exception.MyException;
+
+
+public class FlightEntry extends PlanningEntryCollection&lt;Plane&gt; {
+	// Abstraction function:
+	// 表示数个航班，包含飞机、起飞降落时间、起飞降落机场
+	
+	// Representation invariant:
+	// 一个航班只有一架飞机，两个机场和一个时间段
+	
+	// Safety from rep exposure:
+	// 所有域均为private final
+	// 使用防御性拷贝
+	
+	//constructor
+	private FlightEntry() {
+<span class="fc" id="L24">		super();</span>
+<span class="fc" id="L25">		checkRep();</span>
+<span class="fc" id="L26">	}</span>
+
+	public static FlightEntry getFlightEntry() {
+<span class="fc" id="L29">		return new FlightEntry();</span>
+	}
+	
+	//methods
+	/**
+	 * 增加一架飞机
+	 * @param planename 飞机名字
+	 * @param type 种类
+	 * @param seats 座位数
+	 * @param age 机龄
+	 * @throws MyException 
+	 */
+	public void addPlane(String planename, String type, int seats, double age) throws MyException {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">		if (this.getResource(planename) != null) {//飞机存在</span>
+<span class="fc" id="L43">			throw new MyException(&quot;飞机已经存在&quot;);</span>
+		}
+
+<span class="fc" id="L46">		this.resources.add(Plane.getNewPlane(planename, type, seats, age));</span>
+<span class="fc" id="L47">		checkRep();</span>
+<span class="fc" id="L48">	}</span>
+	
+	/**
+	 * 添加一个计划
+	 * @param planname 计划名称
+	 * @param from 始发地点
+	 * @param to 到达地点
+	 * @param begintime 开始时间
+	 * @param endtime 结束时间
+	 * @throws MyException 
+	 */
+	public void addPlan(String planname, String from, String to, String begintime, String endtime) throws MyException {
+<span class="pc bpc" id="L60" title="1 of 4 branches missed.">		if (this.getLocation(from) == null || this.getLocation(to) == null) {//位置未加入</span>
+<span class="fc" id="L61">			throw new MyException(&quot;机场未被加入&quot;);</span>
+		}
+<span class="fc bfc" id="L63" title="All 2 branches covered.">		if (this.getPlan(planname) != null) {//航班已有</span>
+<span class="fc" id="L64">			throw new MyException(&quot;航班已有&quot;);</span>
+		}
+<span class="pc bpc" id="L66" title="2 of 4 branches missed.">		if (Time.isLegalTime(begintime) == false || Time.isLegalTime(endtime) == false) {//时间输入格式不正确</span>
+<span class="nc" id="L67">			throw new MyException(&quot;时间格式错误&quot;);</span>
+		}
+		
+<span class="fc" id="L70">		Timeslot timeslot = Timeslot.getNewTimeslot(begintime, endtime);</span>
+<span class="fc" id="L71">		PlanningEntry&lt;Plane&gt; line = PlanningEntry.getNewPlanningEntry(planname);</span>
+		
+<span class="fc" id="L73">		line.addLocation(Location.getNewLocation(from));</span>
+<span class="fc" id="L74">		line.addLocation(Location.getNewLocation(to));</span>
+<span class="fc" id="L75">		line.addTimeslot(timeslot);</span>
+<span class="fc" id="L76">		this.plans.add(line);</span>
+		
+<span class="fc" id="L78">		checkRep();</span>
+<span class="fc" id="L79">	}</span>
+
+	
+	@Override
+	public void showBoard(String time, String locationName) {
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">		if (Time.isLegalTime(time) == false) {</span>
+<span class="nc" id="L85">			return;</span>
+		}
+<span class="fc" id="L87">		FlightBoard.Board(Time.getNewTime(time), this.getLocation(locationName), this.plans);</span>
+<span class="fc" id="L88">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

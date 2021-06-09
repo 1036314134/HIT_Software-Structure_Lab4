@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CourseEntryTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">test</a> &gt; <a href="index.source.html" class="el_package">P2</a> &gt; <span class="el_source">CourseEntryTest.java</span></div><h1>CourseEntryTest.java</h1><pre class="source lang-java linenums">package P2;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import P2.CourseSchedule.CourseEntry;
+import P3.Exception.MyException;
+
+<span class="pc bpc" id="L10" title="1 of 2 branches missed.">public class CourseEntryTest {</span>
+	//测试策略
+	//对addTeacher()，测试resources为空时能否正常加入，不为空时能否正常加入，能否避免重复加入
+	//对removeTeacher()，测试能否正常删除
+	//对addPlan()，测试能否正常加入
+	//对changeclassroom()，测试能否正常改变
+	//对于State类，测试状态改变是否符合预期
+	
+	@Test(expected = AssertionError.class)
+	public void testAssertionsEnabled() {
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">		assert false;</span>
+<span class="nc" id="L21">	}</span>
+	
+	@Test
+	public void testResource(){
+<span class="fc" id="L25">		CourseEntry courses = CourseEntry.getCourseEntry();</span>
+<span class="fc" id="L26">		assertEquals(courses.getResource(&quot;A&quot;), null);</span>
+		try {
+<span class="fc" id="L28">			courses.addTeacher(&quot;A&quot;, &quot;320602200003212516&quot;, &quot;男&quot;, &quot;教授&quot;);</span>
+<span class="fc" id="L29">			courses.addTeacher(&quot;B&quot;, &quot;320602200003212516&quot;, &quot;女&quot;, &quot;讲师&quot;);</span>
+<span class="pc" id="L30">		}catch(MyException e) {</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">			assert false;</span>
+		}
+		try {
+<span class="nc" id="L34">			courses.addTeacher(&quot;B&quot;, &quot;320602200003212516&quot;, &quot;女&quot;, &quot;讲师&quot;);</span>
+<span class="pc" id="L35">		}catch(MyException e) {</span>
+			assert true;
+		}
+		
+<span class="fc" id="L39">		assertEquals(courses.getResource(&quot;A&quot;).getName(), &quot;A&quot;);</span>
+		try {
+<span class="fc" id="L41">			courses.removeResource(&quot;A&quot;);</span>
+<span class="pc" id="L42">		}catch(MyException e) {</span>
+<span class="nc" id="L43">			e.getMessage();</span>
+		}
+		
+<span class="fc" id="L46">		assertEquals(courses.getResource(&quot;A&quot;), null);</span>
+<span class="fc" id="L47">	}</span>
+	
+	@Test
+	public void testLocation() throws MyException {
+<span class="fc" id="L51">		CourseEntry courses = CourseEntry.getCourseEntry();</span>
+<span class="fc" id="L52">		String begintime1 = &quot;2020-01-01 17:00&quot;;</span>
+<span class="fc" id="L53">		String endtime1 = &quot;2020-01-01 19:00&quot;;</span>
+<span class="fc" id="L54">		String locationname1 = &quot;正心1&quot;;</span>
+<span class="fc" id="L55">		String locationname2 = &quot;正心2&quot;;</span>
+<span class="fc" id="L56">		String coursename1 = &quot;英语&quot;;</span>
+		
+<span class="fc" id="L58">		courses.addTeacher(&quot;A&quot;, &quot;101&quot;, &quot;man&quot;, &quot;teacher&quot;);</span>
+<span class="fc" id="L59">		courses.addLocation(locationname1);</span>
+<span class="fc" id="L60">		courses.addLocation(locationname2);</span>
+		
+<span class="fc" id="L62">		courses.addPlan(coursename1, locationname1, begintime1, endtime1);</span>
+<span class="fc" id="L63">		assertEquals(courses.getPlan(coursename1).getLocations().get(0).getName(), locationname1);</span>
+		try {
+<span class="fc" id="L65">			courses.changeclassroom(coursename1, locationname2);</span>
+<span class="pc" id="L66">		}catch(MyException e) {</span>
+<span class="nc" id="L67">			e.getMessage();</span>
+		}
+<span class="fc" id="L69">		assertEquals(courses.getPlan(coursename1).getLocations().get(0).getName(), locationname2);</span>
+		
+		
+		
+<span class="fc" id="L73">	}</span>
+	
+	@Test
+	public void testState() throws MyException {
+<span class="fc" id="L77">		CourseEntry courses = CourseEntry.getCourseEntry();</span>
+<span class="fc" id="L78">		String begintime1 = &quot;2020-01-01 17:00&quot;;</span>
+<span class="fc" id="L79">		String endtime1 = &quot;2020-01-01 19:00&quot;;</span>
+		
+<span class="fc" id="L81">		courses.addTeacher(&quot;A&quot;, &quot;101&quot;, &quot;man&quot;, &quot;teacher&quot;);</span>
+<span class="fc" id="L82">		courses.addLocation(&quot;正心1&quot;);</span>
+<span class="fc" id="L83">		courses.addPlan(&quot;英语&quot;, &quot;正心1&quot;, begintime1, endtime1);</span>
+		try {
+<span class="fc" id="L85">			courses.cancel(&quot;英语&quot;);</span>
+<span class="pc" id="L86">		}catch(MyException e) {</span>
+<span class="nc" id="L87">			e.getMessage();</span>
+		}
+		
+		
+		
+<span class="fc" id="L92">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

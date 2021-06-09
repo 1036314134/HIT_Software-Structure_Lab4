@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Timeslot.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P1</a> &gt; <span class="el_source">Timeslot.java</span></div><h1>Timeslot.java</h1><pre class="source lang-java linenums">package P1;
+
+<span class="pc bpc" id="L3" title="1 of 2 branches missed.">public class Timeslot {</span>
+	// Abstraction function:
+	// 表示一个时间段
+	
+	// Representation invariant:
+	// begin记录开始时间
+	// end记录结束时间
+	
+	// Safety from rep exposure:
+	// 所有域均为private final
+	// 使用防御性拷贝
+	private Time begin;
+	private Time end;
+	
+	protected void checkRep() {
+<span class="pc bpc" id="L18" title="2 of 4 branches missed.">		assert this.end.compareto(this.begin) &gt;= 0;</span>
+<span class="fc" id="L19">	}</span>
+	
+	//constructor
+<span class="fc" id="L22">	private Timeslot(Time begin, Time end) {</span>
+<span class="fc" id="L23">		this.begin = Time.getNewTime(begin.getYear(), begin.getMonth(), begin.getDay(), begin.getHour(), begin.getMinute());</span>
+<span class="fc" id="L24">		this.end = Time.getNewTime(end.getYear(), end.getMonth(), end.getDay(), end.getHour(), end.getMinute());</span>
+<span class="fc" id="L25">		checkRep();</span>
+<span class="fc" id="L26">	}</span>
+	
+	public static Timeslot getNewTimeslot(Time begin, Time end) {
+<span class="fc" id="L29">		return new Timeslot(begin, end);</span>
+	}
+	
+	public static Timeslot getNewTimeslot(String begin, String end) {
+<span class="fc" id="L33">		return new Timeslot(Time.getNewTime(begin), Time.getNewTime(end));</span>
+	}
+	
+	//methods
+	public Time getBegin() {
+<span class="fc" id="L38">		return Time.getNewTime(this.begin.toString());</span>
+	}
+
+	public Time getEnd() {
+<span class="fc" id="L42">		return Time.getNewTime(this.end.toString());</span>
+	}
+
+	/**
+	 * 检查begin是否早于end
+	 * @return 如果早于则返回true，否则返回false
+	 */
+	public boolean islegal() {
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">		if(this.getBegin().compareto(this.getEnd()) &lt; 0) {</span>
+<span class="fc" id="L51">			return true;</span>
+		}else {
+<span class="nc" id="L53">			return false;</span>
+		}
+	}
+	
+	/**
+	 * 检查两个时间段是否有重合
+	 * @param timeslot 另一个时间段
+	 * @return 有返回true,没有返回false
+	 */
+	public boolean isConflict(Timeslot timeslot) {
+<span class="pc bpc" id="L63" title="1 of 4 branches missed.">		if(this.getBegin().compareto(timeslot.getEnd()) &gt; 0 || this.getEnd().compareto(timeslot.getBegin()) &lt; 0) {</span>
+<span class="fc" id="L64">			return false;</span>
+		}else {
+<span class="fc" id="L66">			return true;</span>
+		}
+	}
+
+	@Override
+	public String toString() {
+<span class="fc" id="L72">		return &quot;[begin=&quot; + begin + &quot;, end=&quot; + end + &quot;]&quot;;</span>
+	}
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

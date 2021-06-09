@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PlanningEntry.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P1</a> &gt; <span class="el_source">PlanningEntry.java</span></div><h1>PlanningEntry.java</h1><pre class="source lang-java linenums">package P1;
+
+import java.util.List;
+
+public interface PlanningEntry&lt;R&gt; {
+	
+	//constructor
+	public static &lt;R extends Resource&gt; PlanningEntry&lt;R&gt; getNewPlanningEntry(String name) {
+<span class="fc" id="L9">		return CommonPlanningEntry.getNewCommonPlanningEntry(name);</span>
+	}
+	
+	/**
+	 * 获取计划的名字
+	 * @return 计划名字
+	 */
+	public String getName();
+	
+	
+	 /**
+     * 启动计划
+     * @return 计划成功启动返回true
+     * 			否则返回false
+     */
+	public boolean start();
+	
+	
+	/**
+     * 取消计划
+     * @return 计划成功取消返回true
+     * 			否则返回false
+     */
+	public boolean cancel();
+	
+	
+	/**
+	 * 阻塞计划
+	 * @return 计划成功阻塞返回true
+     * 			否则返回false
+	 */
+	public boolean block();
+	
+	
+	/**
+     * 完成计划
+     * @return 计划成功完成返回true
+     * 			否则返回false
+     */
+	public boolean complete();
+
+
+	/**
+	 * 获取计划的状态
+	 * @return 计划的状态
+	 */
+	public State getState();
+
+	
+	/**
+	 * 增加资源
+	 * @param resource 要加入的资源
+	 * @return 成功增加返回true，否则返回false
+	 */
+	public boolean addResource(R resource);
+	
+	
+	/**
+	 * 删除资源
+	 * @param resourcename 资源名
+	 * @return 成功增加返回true，否则返回false
+	 */
+	public boolean removeResource(String resourcename);
+	
+	
+	/**
+	 * 获取所有资源
+	 * @return 所有资源的集合
+	 */
+	public List&lt;R&gt; getResources();
+	
+	
+	/**
+	 * 添加地址
+	 * @param location 地址
+	 * @return 成功添加返回true，否则为false
+	 */
+	public boolean addLocation(Location location);
+	
+	
+	/**
+	 * 获取某个地址
+	 * 
+	 * @param locationname 地址名字
+	 * @return 地址
+	 */
+	public Location getLocation(String locationname);
+	
+	/**
+	 * 删除地址
+	 * @param locationname 地址名字
+	 * @return 成功返回true, 否则返回false
+	 */
+	public boolean removeLocation(String locationname);
+	
+	/**
+	 * 获取所有地址
+	 * @return 所有地址的集合
+	 */
+	public List&lt;Location&gt; getLocations();
+	
+	/**
+	 * 添加时间段
+	 * @param timeslot 时间段
+	 * @return 成功添加返回true，否则为false
+	 */
+	public boolean addTimeslot(Timeslot timeslot);
+	
+	/**
+	 * 获取时间段
+	 * @return 时间段的集合
+	 */
+	public List&lt;Timeslot&gt; getTimeslots();
+	
+	/**
+	 * 获取计划开始时间
+	 * @return 开始时间
+	 */
+	public Time getBegintime();
+	
+	/**
+	 * 获取计划结束时间
+	 * @return 结束时间
+	 */ 
+	public Time getEndtime();
+	
+	/**
+	 * 比较两个计划的早晚
+	 * @param o 另一个计划
+	 * @return 早返回-1, 晚返回1, 相同返回0
+	 */
+	public int compareTo(CommonPlanningEntry&lt;Resource&gt; o);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PlanningEntryAPIs.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P1</a> &gt; <span class="el_source">PlanningEntryAPIs.java</span></div><h1>PlanningEntryAPIs.java</h1><pre class="source lang-java linenums">package P1;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import P1.PlanningEntry;
+import P1.Resource;
+
+<span class="nc" id="L11">public class PlanningEntryAPIs{</span>
+	/**
+	 * 检测一组计划项之间是否存在位置独占冲突
+	 * @param entries 一组计划项
+	 * @return 有冲突返回true, 没有返回false
+	 */
+	public static &lt;R extends Resource&gt; boolean checkLocationConflict(List&lt;PlanningEntry&lt;R&gt;&gt; entries, boolean f) {
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">		if(f) {</span>
+<span class="fc" id="L19">			return PlanningEntryAPIsstrategy1.checkLocationConflict(entries);</span>
+		}else{
+<span class="nc" id="L21">			return PlanningEntryAPIsstrategy2.checkLocationConflict(entries);</span>
+		}
+	}
+	
+	/**
+	 * 检测一组计划项之间是否存在资源独占冲突
+	 * @param entries
+	 * @return
+	 */
+	public static &lt;R extends Resource&gt; boolean checkResourceExclusiveConflict(List&lt;PlanningEntry&lt;R&gt;&gt; entries) {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">		for (PlanningEntry&lt;R&gt; p : entries) {</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">			for (PlanningEntry&lt;R&gt; q : entries) {</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">				if (p.getName().equals(q.getName())) {</span>
+<span class="fc" id="L34">					continue;</span>
+				}
+<span class="fc" id="L36">				boolean flag = false;</span>
+
+<span class="fc bfc" id="L38" title="All 2 branches covered.">				for (R i: p.getResources()) {</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">					for (R j: q.getResources()) {</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">						if (i.equals(j)) {</span>
+<span class="fc" id="L41">							flag = true;</span>
+<span class="fc" id="L42">							break;</span>
+						}
+					}
+				}
+				
+<span class="fc bfc" id="L47" title="All 2 branches covered.">				if (flag == false) {</span>
+<span class="fc" id="L48">					continue;</span>
+				}
+				
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">				for (Timeslot s : p.getTimeslots()) {</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">					for (Timeslot t : q.getTimeslots()) {</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">						if (s.isConflict(t)) {</span>
+<span class="fc" id="L54">							return true;</span>
+						}
+					}
+				}
+			}
+		}
+
+<span class="fc" id="L61">		return false;</span>
+	}
+	
+	/**
+	 * 提取面向特定资源的前序计划项
+	 * @param r 资源
+	 * @param e 使用资源r的计划项
+	 * @param entries 一组计划项
+	 * @return 前序计划项
+	 */
+	public static &lt;R extends Resource&gt; PlanningEntry&lt;R&gt; findPreEntryPerResource(R r, PlanningEntry&lt;R&gt; e, List&lt;PlanningEntry&lt;R&gt;&gt; entries) {
+<span class="nc bnc" id="L72" title="All 4 branches missed.">		if (r == null || e == null) {</span>
+<span class="nc" id="L73">			return null;</span>
+		}
+
+<span class="nc bnc" id="L76" title="All 2 branches missed.">		if (e.getResources().contains(r) == false) {</span>
+<span class="nc" id="L77">			return null;</span>
+		}
+		
+<span class="nc" id="L80">		List&lt;PlanningEntry&lt;R&gt;&gt; plans = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		for (PlanningEntry&lt;R&gt; f : entries) {</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">			if(e.getBegintime().compareto(f.getEndtime()) &lt;= 0) {</span>
+<span class="nc" id="L84">				continue;</span>
+			}
+<span class="nc bnc" id="L86" title="All 2 branches missed.">			for (R i: f.getResources()) {</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">				if (i.getName().equals(r.getName())) {</span>
+<span class="nc" id="L88">					plans.add(f);</span>
+<span class="nc" id="L89">					break;</span>
+				}
+			}
+		}
+
+<span class="nc" id="L94">		Collections.sort(plans, new Comparator&lt;PlanningEntry&lt;R&gt;&gt;() {</span>
+			@Override
+			public int compare(PlanningEntry&lt;R&gt; a, PlanningEntry&lt;R&gt; b) {
+<span class="nc" id="L97">				return a.getEndtime().compareto(b.getEndtime());</span>
+			}
+
+		});
+
+<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (plans.isEmpty()) {</span>
+<span class="nc" id="L103">			return null;</span>
+		}
+<span class="nc" id="L105">		return plans.get(plans.size() - 1);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

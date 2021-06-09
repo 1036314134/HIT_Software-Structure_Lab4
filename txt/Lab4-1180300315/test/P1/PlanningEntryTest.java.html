@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PlanningEntryTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">test</a> &gt; <a href="index.source.html" class="el_package">P1</a> &gt; <span class="el_source">PlanningEntryTest.java</span></div><h1>PlanningEntryTest.java</h1><pre class="source lang-java linenums">package P1;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+<span class="pc bpc" id="L7" title="1 of 2 branches missed.">public class PlanningEntryTest {</span>
+	//测试策略
+	//对PlanningEntry类
+	//对状态改变函数，测试默认状态下能不能改变
+	//对getState(), 测试默认状态是否为&quot;WAITING&quot;
+	//对addResource(), 测试resources为空时能否加入，不为空时能否加入，是否能避免重复加入。
+	//对removeResource(), 测试能否正确删除，资源不存在时是否会误删
+	//对addLocation(), 测试locations为空时能否加入，不为空时能否加入，是否能避免重复加入。
+	//对removeLocation(), 测试能否正确删除，位置不存在时是否会误删
+	
+	//对Timeslot类
+	//对islegal()，测试能否判断出输入是否合法
+	//对isConflict()，测试时间段不冲突和冲突两种情况
+	//对addTimeslot()，测试timeslots为空时能否加入，不为空时能否加入，是否避免重复加入。
+	//对getBegintime()和getBegintime()，测试能否正确提取开始与结束时间
+	
+	
+	@Test(expected = AssertionError.class)
+	public void testAssertionsEnabled() {
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">		assert false;</span>
+<span class="nc" id="L27">	}</span>
+	
+	@Test
+	public void testgetName() {
+<span class="fc" id="L31">		String name = &quot;wuhuqifei&quot;;</span>
+<span class="fc" id="L32">		PlanningEntry&lt;Resource&gt; plan = PlanningEntry.getNewPlanningEntry(name);</span>
+		
+<span class="fc" id="L34">		assertEquals(plan.getName(), name);</span>
+<span class="fc" id="L35">	}</span>
+	
+	@Test
+	public void teststart() {
+<span class="fc" id="L39">		String name = &quot;wuhuqifei&quot;;</span>
+<span class="fc" id="L40">		PlanningEntry&lt;Resource&gt; plan = PlanningEntry.getNewPlanningEntry(name);</span>
+		
+<span class="fc" id="L42">		assertEquals(plan.start(), false);</span>
+<span class="fc" id="L43">	}</span>
+	
+	@Test
+	public void testcancel() {
+<span class="fc" id="L47">		String name = &quot;wuhuqifei&quot;;</span>
+<span class="fc" id="L48">		PlanningEntry&lt;Resource&gt; plan = PlanningEntry.getNewPlanningEntry(name);</span>
+		
+<span class="fc" id="L50">		assertEquals(plan.cancel(), true);</span>
+<span class="fc" id="L51">	}</span>
+	
+	@Test
+	public void testblock() {
+<span class="fc" id="L55">		String name = &quot;wuhuqifei&quot;;</span>
+<span class="fc" id="L56">		PlanningEntry&lt;Resource&gt; plan = PlanningEntry.getNewPlanningEntry(name);</span>
+		
+<span class="fc" id="L58">		assertEquals(plan.block(), false);</span>
+<span class="fc" id="L59">	}</span>
+	
+	@Test
+	public void testcomplete() {
+<span class="fc" id="L63">		String name = &quot;wuhuqifei&quot;;</span>
+<span class="fc" id="L64">		PlanningEntry&lt;Resource&gt; plan = PlanningEntry.getNewPlanningEntry(name);</span>
+		
+<span class="fc" id="L66">		assertEquals(plan.complete(), false);</span>
+<span class="fc" id="L67">	}</span>
+	
+	@Test
+	public void testgetState() {
+<span class="fc" id="L71">		String name = &quot;wuhuqifei&quot;;</span>
+<span class="fc" id="L72">		PlanningEntry&lt;Resource&gt; plan = PlanningEntry.getNewPlanningEntry(name);</span>
+		
+<span class="fc" id="L74">		assertEquals(plan.getState().getName(), &quot;WAITING&quot;);</span>
+<span class="fc" id="L75">	}</span>
+	
+	@Test
+	public void testResource() {
+<span class="fc" id="L79">		String name = &quot;wuhuqifei&quot;;</span>
+<span class="fc" id="L80">		PlanningEntry&lt;Resource&gt; plan = PlanningEntry.getNewPlanningEntry(name);</span>
+		
+<span class="fc" id="L82">		assertEquals(plan.getResources().isEmpty(), true);</span>
+<span class="fc" id="L83">		assertEquals(plan.addResource(new Resource(&quot;feiji1&quot;)), true);</span>
+<span class="fc" id="L84">		assertEquals(plan.getResources().size(), 1);</span>
+<span class="fc" id="L85">		assertEquals(plan.addResource(new Resource(&quot;feiji2&quot;)), true);</span>
+<span class="fc" id="L86">		assertEquals(plan.getResources().size(), 2);</span>
+<span class="fc" id="L87">		assertEquals(plan.addResource(new Resource(&quot;feiji2&quot;)), false);</span>
+<span class="fc" id="L88">		assertEquals(plan.getResources().size(), 2);</span>
+<span class="fc" id="L89">		assertEquals(plan.removeResource(&quot;feiji2&quot;), true);</span>
+<span class="fc" id="L90">		assertEquals(plan.getResources().size(), 1);</span>
+<span class="fc" id="L91">		assertEquals(plan.removeResource(&quot;feiji2&quot;), false);</span>
+<span class="fc" id="L92">	}</span>
+	
+	@Test
+	public void testLocation() {
+<span class="fc" id="L96">		String name = &quot;wuhuqifei&quot;;</span>
+<span class="fc" id="L97">		PlanningEntry&lt;Resource&gt; plan = PlanningEntry.getNewPlanningEntry(name);</span>
+		
+<span class="fc" id="L99">		Location location1 = Location.getNewLocation(&quot;wuhu&quot;);</span>
+<span class="fc" id="L100">		Location location2 = Location.getNewLocation(&quot;nantong&quot;);</span>
+		
+<span class="fc" id="L102">		assertEquals(plan.addLocation(location1), true);</span>
+<span class="fc" id="L103">		assertEquals(plan.addLocation(location2), true);</span>
+<span class="fc" id="L104">		assertEquals(plan.addLocation(location2), false);</span>
+<span class="fc" id="L105">		assertEquals(plan.getLocations().get(0).getName().equals(location1.getName()), true);</span>
+<span class="fc" id="L106">		assertEquals(plan.getLocation(&quot;wuhu&quot;).getName().equals(&quot;wuhu&quot;), true);</span>
+<span class="fc" id="L107">		assertEquals(plan.removeLocation(location1.getName()), true);</span>
+<span class="fc" id="L108">		assertEquals(plan.removeLocation(location1.getName()), false);</span>
+		
+
+<span class="fc" id="L111">	}</span>
+	
+	@Test
+	public void testTime(){
+<span class="fc" id="L115">		String name = &quot;wuhuqifei&quot;;</span>
+<span class="fc" id="L116">		PlanningEntry&lt;Resource&gt; plan = PlanningEntry.getNewPlanningEntry(name);</span>
+		
+<span class="fc" id="L118">		Time time1 = Time.getNewTime(2020, 3, 21, 10, 30);</span>
+<span class="fc" id="L119">		Time time2 = Time.getNewTime(2020, 3, 21, 11, 00);</span>
+<span class="fc" id="L120">		Time time3 = Time.getNewTime(2020, 3, 21, 11, 30);</span>
+<span class="fc" id="L121">		Time time4 = Time.getNewTime(2020, 3, 21, 11, 50);</span>
+		
+<span class="fc" id="L123">		Timeslot timeslot1 = Timeslot.getNewTimeslot(time1, time2);</span>
+<span class="fc" id="L124">		Timeslot timeslot2 = Timeslot.getNewTimeslot(time2, time3);</span>
+<span class="fc" id="L125">		Timeslot timeslot3 = Timeslot.getNewTimeslot(time3, time4);</span>
+<span class="fc" id="L126">		Timeslot timeslot4 = Timeslot.getNewTimeslot(&quot;2020-03-21 10:30&quot;, &quot;2020-03-21 11:00&quot;);</span>
+		
+<span class="fc" id="L128">		assertEquals(timeslot1.toString().equals(timeslot4.toString()), true);</span>
+		
+<span class="fc" id="L130">		assertEquals(timeslot1.islegal(), true);</span>
+		
+<span class="fc" id="L132">		assertEquals(timeslot1.isConflict(timeslot2), true);</span>
+<span class="fc" id="L133">		assertEquals(timeslot1.isConflict(timeslot3), false);</span>
+		
+<span class="fc" id="L135">		assertEquals(plan.addTimeslot(timeslot1), true);</span>
+<span class="fc" id="L136">		assertEquals(plan.addTimeslot(timeslot2), true);</span>
+<span class="fc" id="L137">		assertEquals(plan.addTimeslot(timeslot2), false);</span>
+		
+<span class="fc" id="L139">		assertEquals(plan.getBegintime().toString().equals(&quot;2020-03-21 10:30&quot;), true);</span>
+<span class="fc" id="L140">		assertEquals(plan.getEndtime().toString().equals(&quot;2020-03-21 11:30&quot;), true);</span>
+<span class="fc" id="L141">	}</span>
+	
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

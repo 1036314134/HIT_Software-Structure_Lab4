@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Time.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P1</a> &gt; <span class="el_source">Time.java</span></div><h1>Time.java</h1><pre class="source lang-java linenums">package P1;
+
+import java.util.Arrays;
+import java.util.List;
+
+<span class="pc bpc" id="L6" title="1 of 2 branches missed.">public class Time{</span>
+	// Abstraction function:
+	// 表示一个时间点
+	
+	// Representation invariant:
+	// year，month, day, hour, minute分别记录年、月、日、时、分
+	
+	// Safety from rep exposure:
+	// 所有域均为private final
+	// 使用防御性拷贝
+	private int year;
+	private int month;
+	private int day;
+	private int hour;
+	private int minute;
+
+	protected void checkRep() {
+<span class="pc bpc" id="L23" title="2 of 4 branches missed.">		assert this.year &gt;= 0;</span>
+<span class="pc bpc" id="L24" title="3 of 6 branches missed.">		assert this.month &gt;= 0 &amp;&amp; this.month &lt;= 12;</span>
+<span class="pc bpc" id="L25" title="3 of 6 branches missed.">		assert this.day &gt;= 0 &amp;&amp; this.day &lt;= 30;</span>
+		//assert this.hour &gt;= 0 &amp;&amp; this.hour &lt; 24;
+<span class="pc bpc" id="L27" title="3 of 6 branches missed.">		assert this.minute &gt;= 0 &amp;&amp; this.minute &lt; 60;</span>
+<span class="fc" id="L28">	}</span>
+
+	//constructor
+<span class="fc" id="L31">	private Time(int year, int month, int day, int hour, int minute) {</span>
+<span class="fc" id="L32">		this.year = year;</span>
+<span class="fc" id="L33">		this.month = month;</span>
+<span class="fc" id="L34">		this.day = day;</span>
+<span class="fc" id="L35">		this.hour = hour;</span>
+<span class="fc" id="L36">		this.minute = minute;</span>
+<span class="fc" id="L37">		checkRep();</span>
+<span class="fc" id="L38">	}</span>
+
+	public static Time getNewTime(int year, int month, int day, int hour, int minute) {
+<span class="fc" id="L41">		return new Time(year, month, day, hour, minute);</span>
+	}
+	
+	public static Time getNewTime(String time) {
+<span class="fc" id="L45">		List&lt;String&gt; information = Arrays.asList(time.split(&quot; &quot;));</span>
+<span class="fc" id="L46">		List&lt;String&gt; information1 = Arrays.asList(information.get(0).split(&quot;-&quot;));</span>
+<span class="fc" id="L47">		List&lt;String&gt; information2 = Arrays.asList(information.get(1).split(&quot;:&quot;));</span>
+
+<span class="fc" id="L49">		return Time.getNewTime(Integer.parseInt(information1.get(0)), Integer.parseInt(information1.get(1)), Integer.parseInt(information1.get(2)),</span>
+<span class="fc" id="L50">				Integer.parseInt(information2.get(0)), Integer.parseInt(information2.get(1)));</span>
+	}
+	
+	//methods
+	public int getYear() {
+<span class="fc" id="L55">		return this.year;</span>
+	}
+
+	public int getMonth() {
+<span class="fc" id="L59">		return this.month;</span>
+	}
+
+	public int getDay() {
+<span class="fc" id="L63">		return this.day;</span>
+	}
+
+	public int getHour() {
+<span class="fc" id="L67">		return this.hour;</span>
+	}
+
+	public int getMinute() {
+<span class="fc" id="L71">		return this.minute;</span>
+	}
+	
+	/**
+	 * 判断时间是否合规
+	 * @param t 时间的字符表示
+	 * @return 合规返回true，否则返回false
+	 */
+	public static boolean isLegalTime(String t) {
+<span class="fc" id="L80">		List&lt;String&gt; time = Arrays.asList(t.split(&quot; &quot;));</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">		if (time.size() != 2) {</span>
+<span class="nc" id="L82">			return false;</span>
+		}
+<span class="fc" id="L84">		List&lt;String&gt; big = Arrays.asList(time.get(0).split(&quot;-&quot;));</span>
+<span class="fc" id="L85">		List&lt;String&gt; small = Arrays.asList(time.get(1).split(&quot;:&quot;));</span>
+
+<span class="pc bpc" id="L87" title="2 of 4 branches missed.">		if (big.size() != 3 || small.size() != 2) {</span>
+<span class="nc" id="L88">			return false;</span>
+		}
+
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (big.get(0).matches(&quot;[0-9]+&quot;) == false) {</span>
+<span class="nc" id="L92">			return false;</span>
+		}
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">		if (big.get(1).matches(&quot;[0-9]+&quot;) == false) {</span>
+<span class="nc" id="L95">			return false;</span>
+		}
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (big.get(2).matches(&quot;[0-9]+&quot;) == false) {</span>
+<span class="nc" id="L98">			return false;</span>
+		}
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (small.get(0).matches(&quot;[0-9]+&quot;) == false) {</span>
+<span class="nc" id="L101">			return false;</span>
+		}
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">		if (small.get(1).matches(&quot;[0-9]+&quot;) == false) {</span>
+<span class="nc" id="L104">			return false;</span>
+		}
+		
+<span class="fc" id="L107">		return true;</span>
+	}
+
+	
+	/**
+	 * 增加时间
+	 * @param time 需要增加的时间
+	 */
+	public void addTime(Time time) {
+<span class="fc" id="L116">		this.minute += time.getMinute();</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (this.minute &lt; 0) {</span>
+<span class="nc" id="L118">			this.minute += 60;</span>
+<span class="nc" id="L119">			this.hour -= 1;</span>
+		}
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (this.minute &gt;= 60) {</span>
+<span class="nc" id="L122">			this.minute -= 60;</span>
+<span class="nc" id="L123">			this.hour += 1;</span>
+		}
+		
+<span class="fc" id="L126">		this.hour += time.getHour();</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (this.hour &lt; 0) {</span>
+<span class="nc" id="L128">			this.hour += 24;</span>
+<span class="nc" id="L129">			this.day -= 1;</span>
+		}
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (this.hour &gt;= 24) {</span>
+<span class="nc" id="L132">			this.hour -= 24;</span>
+<span class="nc" id="L133">			this.day += 1;</span>
+		}
+		
+<span class="fc" id="L136">		this.day += time.getDay();</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (this.day &lt;= 0) {</span>
+<span class="nc" id="L138">			this.day += 30;</span>
+<span class="nc" id="L139">			this.month -= 1;</span>
+		}
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (this.day &gt; 30) {</span>
+<span class="nc" id="L142">			this.day -= 30;</span>
+<span class="nc" id="L143">			this.month += 1;</span>
+		}
+		
+<span class="fc" id="L146">		this.month += time.getMonth();</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (this.month &lt;= 0) {</span>
+<span class="nc" id="L148">			this.month += 12;</span>
+<span class="nc" id="L149">			this.year -= 1;</span>
+		}
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (this.month &gt; 12) {</span>
+<span class="nc" id="L152">			this.month -= 12;</span>
+<span class="nc" id="L153">			this.year += 1;</span>
+		}
+		
+<span class="fc" id="L156">		this.year += time.getYear();</span>
+
+<span class="fc" id="L158">		checkRep();</span>
+<span class="fc" id="L159">	}</span>
+
+	/**
+	 * 检查两个时间是否在同一天
+	 * @param time 时间
+	 * @return 如果相同返回true,否则返回false
+	 */
+	public boolean sameday(Time time) {
+<span class="pc bpc" id="L167" title="3 of 6 branches missed.">		return this.year == time.getYear() &amp;&amp; this.month == time.getMonth() &amp;&amp; this.day == time.getDay();</span>
+	}
+	
+	/**
+	 * 比较两个时间的早晚
+	 * @param time 另一个时间
+	 * @return 若更晚则返回1，更早返回-1，时间相同返回0
+	 */
+	public int compareto(Time time) {
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">		if (this.year &gt; time.getYear()) {</span>
+<span class="nc" id="L177">			return 1;</span>
+		}
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if (this.year &lt; time.getYear()) {</span>
+<span class="nc" id="L180">			return -1;</span>
+		}
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (this.month &gt; time.getMonth()) {</span>
+<span class="nc" id="L183">			return 1;</span>
+		}
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		if (this.month &lt; time.getMonth()) {</span>
+<span class="nc" id="L186">			return -1;</span>
+		}
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">		if (this.day &gt; time.getDay()) {</span>
+<span class="nc" id="L189">			return 1;</span>
+		}
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		if (this.day &lt; time.getDay()) {</span>
+<span class="nc" id="L192">			return -1;</span>
+		}
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		if (this.hour &gt; time.getHour()) {</span>
+<span class="fc" id="L195">			return 1;</span>
+		}
+<span class="fc bfc" id="L197" title="All 2 branches covered.">		if (this.hour &lt; time.getHour()) {</span>
+<span class="fc" id="L198">			return -1;</span>
+		}
+<span class="fc bfc" id="L200" title="All 2 branches covered.">		if (this.minute &gt; time.getMinute()) {</span>
+<span class="fc" id="L201">			return 1;</span>
+		}
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		if (this.minute &lt; time.getMinute()) {</span>
+<span class="fc" id="L204">			return -1;</span>
+		}
+		
+<span class="fc" id="L207">		return 0;</span>
+	}
+	
+	@Override
+	public String toString() {
+<span class="fc" id="L212">		return String.format(&quot;%04d&quot;, this.year) + &quot;-&quot; + String.format(&quot;%02d&quot;, this.month) + &quot;-&quot;</span>
+<span class="fc" id="L213">				+ String.format(&quot;%02d&quot;, this.day) + &quot; &quot; + String.format(&quot;%02d&quot;, this.hour) + &quot;:&quot;</span>
+<span class="fc" id="L214">				+ String.format(&quot;%02d&quot;, this.minute);</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>State.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P1</a> &gt; <span class="el_source">State.java</span></div><h1>State.java</h1><pre class="source lang-java linenums">package P1;
+
+<span class="pc bpc" id="L3" title="1 of 2 branches missed.">public class State {</span>
+	// Abstraction function:
+	// 表示计划的状态
+	//
+	// Representation invariant:
+	// name记录状态名，不为空
+	//
+	// Safety from rep exposure:
+	// name是private的
+	//使用防御性拷贝
+	
+	private String name;
+	
+	protected void checkRep() {
+<span class="pc bpc" id="L17" title="2 of 4 branches missed.">		assert this.name != null;</span>
+<span class="fc" id="L18">	}</span>
+	
+	//constructor
+<span class="fc" id="L21">	private State(String name) {</span>
+<span class="fc" id="L22">		this.name = name;</span>
+<span class="fc" id="L23">		checkRep();</span>
+<span class="fc" id="L24">	}</span>
+	
+	public static State getNewState(String name) {
+<span class="fc" id="L27">		return new State(name);</span>
+	}
+	
+	//methods
+	public String getName() {
+<span class="fc" id="L32">		return new String(this.name);</span>
+	}
+	
+	/**
+	 * 判断目前的状态能否转换到指定状态
+	 * @param name 指定状态名
+	 * @return 可以返回true， 否则返回false
+	 */
+	public boolean canchange(String name) {
+<span class="pc bpc" id="L41" title="3 of 7 branches missed.">		switch(name) {</span>
+		case &quot;WAITING&quot;:
+<span class="nc" id="L43">			return false;</span>
+		case &quot;ALLOCATED&quot;:
+<span class="nc bnc" id="L45" title="All 2 branches missed.">			if(this.getName().equals(&quot;WAITING&quot;)) {</span>
+<span class="nc" id="L46">				return true;</span>
+			}else {
+<span class="nc" id="L48">				return false;</span>
+			}
+		case &quot;RUNNING&quot;:
+<span class="pc bpc" id="L51" title="1 of 4 branches missed.">			if(this.getName().equals(&quot;ALLOCATED&quot;) || this.getName().equals(&quot;BLOCKED&quot;)) {</span>
+<span class="fc" id="L52">				return true;</span>
+			}else {
+<span class="fc" id="L54">				return false;</span>
+			}
+		case &quot;BLOCKED&quot;:
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">			if(this.getName().equals(&quot;RUNNING&quot;)) {</span>
+<span class="nc" id="L58">				return true;</span>
+			}else {
+<span class="fc" id="L60">				return false;</span>
+			}
+		case &quot;ENDED&quot;:
+<span class="fc bfc" id="L63" title="All 2 branches covered.">			if(this.getName().equals(&quot;RUNNING&quot;)) {</span>
+<span class="fc" id="L64">				return true;</span>
+			}else {
+<span class="fc" id="L66">				return false;</span>
+			}
+		case &quot;CANCELLED&quot;:	
+<span class="pc bpc" id="L69" title="1 of 6 branches missed.">			if(this.getName().equals(&quot;WAITING&quot;) || this.getName().equals(&quot;ALLOCATED&quot;) || this.getName().equals(&quot;BLOCKED&quot;)) {</span>
+<span class="fc" id="L70">				return true;</span>
+			}else {
+<span class="fc" id="L72">				return false;</span>
+			}
+		default:
+<span class="nc" id="L75">			return false;</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

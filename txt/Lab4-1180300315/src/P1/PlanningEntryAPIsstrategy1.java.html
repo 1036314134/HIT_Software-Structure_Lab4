@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PlanningEntryAPIsstrategy1.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P1</a> &gt; <span class="el_source">PlanningEntryAPIsstrategy1.java</span></div><h1>PlanningEntryAPIsstrategy1.java</h1><pre class="source lang-java linenums">package P1;
+
+import java.util.List;
+
+<span class="nc" id="L5">public class PlanningEntryAPIsstrategy1 extends PlanningEntryAPIs{</span>
+	public static &lt;R extends Resource&gt; boolean checkLocationConflict(List&lt;PlanningEntry&lt;R&gt;&gt; entries) {
+<span class="pc bpc" id="L7" title="1 of 2 branches missed.">		if(entries.get(0).getLocations().size() &gt; 1) {//大于一个位置说明是高铁或飞机，永不冲突</span>
+<span class="nc" id="L8">			return false;</span>
+		}
+		
+<span class="fc bfc" id="L11" title="All 2 branches covered.">		for (PlanningEntry&lt;R&gt; p : entries) {</span>
+<span class="fc bfc" id="L12" title="All 2 branches covered.">			for (PlanningEntry&lt;R&gt; q : entries) {</span>
+<span class="pc bpc" id="L13" title="1 of 2 branches missed.">				if (p.getName().equals(q.getName())) {</span>
+<span class="fc" id="L14">					continue;</span>
+				}
+<span class="nc bnc" id="L16" title="All 2 branches missed.">				if(p.getLocations().get(0).getName().equals(q.getLocations().get(0).getName()) == false){</span>
+<span class="nc" id="L17">					continue;</span>
+				}
+<span class="nc bnc" id="L19" title="All 2 branches missed.">				if(p.getTimeslots().get(0).isConflict(q.getTimeslots().get(0))) {</span>
+<span class="nc" id="L20">					return true;</span>
+				}
+			}
+		}
+			
+<span class="fc" id="L25">		return false;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

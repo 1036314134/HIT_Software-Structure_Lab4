@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>CourseBoardTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">test</a> &gt; <a href="index.source.html" class="el_package">P2</a> &gt; <span class="el_source">CourseBoardTest.java</span></div><h1>CourseBoardTest.java</h1><pre class="source lang-java linenums">package P2;
+
+import org.junit.Test;
+
+import P2.CourseSchedule.CourseEntry;
+import P3.Exception.MyException;
+
+<span class="pc bpc" id="L8" title="1 of 2 branches missed.">public class CourseBoardTest {</span>
+	//测试策略
+	//测试能否正常将一节课的课表打印出来
+	@Test(expected = AssertionError.class)
+	public void testAssertionsEnabled() {
+<span class="pc bpc" id="L13" title="1 of 2 branches missed.">		assert false;</span>
+<span class="nc" id="L14">	}</span>
+	
+	
+	@Test
+	public void testBorad() throws MyException {
+<span class="fc" id="L19">		CourseEntry plans = CourseEntry.getCourseEntry();</span>
+<span class="fc" id="L20">		String locationname1 = &quot;正心1&quot;;</span>
+<span class="fc" id="L21">		String begintime1 = &quot;2020-01-01 15:00&quot;;</span>
+<span class="fc" id="L22">		String endtime1 = &quot;2020-01-01 18:00&quot;;</span>
+<span class="fc" id="L23">		String nowtime1 = &quot;2020-01-01 14:30&quot;;</span>
+		
+<span class="fc" id="L25">		plans.addLocation(locationname1);</span>
+<span class="fc" id="L26">		plans.addTeacher(&quot;A&quot;, &quot;A380&quot;, &quot;男&quot;, &quot;教授&quot;);</span>
+<span class="fc" id="L27">		plans.addPlan(&quot;马原1&quot;, locationname1, begintime1, endtime1);</span>
+<span class="fc" id="L28">		plans.allocateResource(&quot;A&quot;, &quot;马原1&quot;);</span>
+		
+<span class="fc" id="L30">		plans.showBoard(nowtime1 ,locationname1);</span>
+<span class="fc" id="L31">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PlanningEntryIterator.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">test (2020-6-7 10:52:11)</a> &gt; <a href="../../index.html" class="el_group">Lab4-1180300315</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">P1</a> &gt; <span class="el_source">PlanningEntryIterator.java</span></div><h1>PlanningEntryIterator.java</h1><pre class="source lang-java linenums">package P1;
+
+import java.util.*;
+
+
+public class PlanningEntryIterator&lt;E extends Comparable&lt;E&gt;, R extends Resource&gt; implements Iterator&lt;E&gt; {
+	private List&lt;E&gt; ObjectList;
+	private int index;
+	private int size;
+
+<span class="nc" id="L11">	public PlanningEntryIterator(Map&lt;PlanningEntry&lt;R&gt;, List&lt;E&gt;&gt; map) {</span>
+<span class="nc" id="L12">		index = 0;</span>
+<span class="nc" id="L13">		size = 0;</span>
+<span class="nc bnc" id="L14" title="All 2 branches missed.">		for (Map.Entry&lt;PlanningEntry&lt;R&gt;, List&lt;E&gt;&gt; entry: map.entrySet()) {</span>
+<span class="nc" id="L15">			size += entry.getValue().size();</span>
+		}
+<span class="nc" id="L17">		ObjectList = map.keySet().stream().sorted().map(map::get).reduce(new ArrayList&lt;&gt;(), (result, element) -&gt; {</span>
+<span class="nc" id="L18">			Collections.sort(element);</span>
+<span class="nc" id="L19">			result.addAll(element);</span>
+<span class="nc" id="L20">			return result;</span>
+		});
+<span class="nc" id="L22">	}</span>
+
+	@Override
+	public boolean hasNext() {
+<span class="nc bnc" id="L26" title="All 2 branches missed.">		return index &lt; size;</span>
+	}
+
+	@Override
+	public E next() {
+<span class="nc" id="L31">		return ObjectList.get(index++);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>test (2020-6-7 10:52:11)</div></body></html>
